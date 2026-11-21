@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Where There Is No Doctor</title>
+<meta name="description" content="Offline village health and dental care handbook — symptom search, medicines, danger signs.">
+<meta name="theme-color" content="#F2ECDF">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2ECDF; --card:#FFFCF5; --card2:#FAF5E9;
+  --ink:#1B1713; --ink2:#53493D; --ink3:#8A7E6C;
+  --rule:#DCD1BA; --rule2:#EAE1CF;
+  --red:#B5342A; --red-tint:#FBE9E5; --red-ink:#8C241C;
+  --green:#2D6A4C; --green-tint:#E6F0E7;
+  --gold:#B8860B; --gold-tint:#FAF0D4;
+  --teal:#1F5F6B; --teal-tint:#E2EFF1;
+  --brown:#7A5C33;
+  --shadow:0 1px 0 rgba(27,23,19,.04), 0 2px 10px rgba(27,23,19,.05);
+  --dock-h:188px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{background:#2A2621;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:var(--ink);display:flex;align-items:center;justify-content:center;overscroll-behavior:none}
+.shell{width:100%;max-width:412px;height:100dvh;max-height:900px;position:relative;
+  background:var(--paper);overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.5);border-radius:28px}
+@media (max-width:480px){.shell{max-height:none;border-radius:0;box-shadow:none}body{background:var(--paper)}}
+.app{position:absolute;inset:0;display:flex;flex-direction:column}
+
+.topbar{flex:0 0 auto;padding:13px 18px 9px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--rule2);background:var(--paper);position:relative;z-index:5}
+.mark{font-family:Archivo,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase}
+.mark b{color:var(--red)}
+.edition{margin-left:auto;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink3);display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
+.dot.off{background:var(--ink3)}
+
+.view{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:18px 18px calc(var(--dock-h) + 16px)}
+
+h1{font-family:Archivo,sans-serif;font-size:29px;line-height:1.08;letter-spacing:-.02em;font-weight:800;margin:0 0 4px}
+h2{font-family:Archivo,sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  font-weight:700;color:var(--ink3);margin:26px 0 10px;display:flex;align-items:center;gap:8px}
+h2::after{content:"";flex:1;height:1px;background:var(--rule2)}
+p{margin:0 0 12px;line-height:1.5;font-size:15px;color:var(--ink2)}
+.lede{font-size:15.5px;color:var(--ink2);line-height:1.5}
+
+.ask{font-family:Archivo,sans-serif;font-size:33px;line-height:1.05;letter-spacing:-.025em;font-weight:800;margin:8px 0 6px}
+.ask-sub{font-size:14px;color:var(--ink3);margin-bottom:20px}
+.quick{display:flex;flex-wrap:wrap;gap:8px}
+.quick button{font:inherit;font-size:14.5px;font-weight:600;padding:10px 14px;border-radius:999px;
+  border:1.5px solid var(--rule);background:var(--card);color:var(--ink);cursor:pointer}
+.quick button:active{background:var(--card2);transform:scale(.97)}
+
+.card{background:var(--card);border:1px solid var(--rule2);border-radius:14px;padding:14px;
+  margin-bottom:9px;box-shadow:var(--shadow);cursor:pointer;text-align:left;width:100%;
+  font:inherit;color:inherit;display:block}
+.card:active{transform:scale(.985)}
+.card-name{font-family:Archivo,sans-serif;font-size:18px;font-weight:700;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap}
+.aka{font-size:12.5px;color:var(--ink3);font-weight:500;margin-bottom:7px}
+.why{font-size:14px;line-height:1.45;color:var(--ink2)}
+.gap{font-size:12.5px;color:var(--ink3);margin-top:9px;padding-top:9px;border-top:1px dashed var(--rule)}
+.gap b{color:var(--brown);font-weight:600}
+
+.badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 6px;border-radius:5px;background:var(--gold-tint);color:var(--gold);white-space:nowrap}
+.badge.strong{background:var(--green-tint);color:var(--green)}
+.badge.weak{background:#EFEADC;color:var(--ink3)}
+.src{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 6px;border-radius:5px;background:var(--gold-tint);color:var(--gold)}
+.src.dentist{background:var(--teal-tint);color:var(--teal)}
+.pageref{margin-left:auto;font-size:11px;color:var(--ink3);font-weight:500}
+
+.danger-screen{background:var(--red-tint);border:2px solid var(--red);border-radius:16px;padding:18px;margin-bottom:14px}
+.danger-kicker{font-family:Archivo,sans-serif;font-size:10.5px;font-weight:800;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.danger-screen h3{font-family:Archivo,sans-serif;font-size:22px;line-height:1.15;margin:0 0 8px;
+  letter-spacing:-.015em;font-weight:800;color:var(--red-ink)}
+.danger-screen p{color:#6E2A22;font-size:14.5px}
+.meanwhile{background:rgba(255,255,255,.6);border-radius:10px;padding:12px 13px;margin-top:12px}
+.meanwhile h4{font-family:Archivo,sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px;color:var(--red)}
+.meanwhile li{font-size:14px;line-height:1.45;margin-bottom:5px;color:#5E241D}
+.meanwhile ul{margin:0;padding-left:17px}
+.dismiss{width:100%;margin-top:13px;padding:12px;border-radius:10px;border:1.5px solid rgba(181,52,42,.35);
+  background:transparent;color:var(--red-ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+
+.checkq{background:var(--card);border:1px solid var(--rule2);border-left:3px solid var(--red);
+  border-radius:12px;padding:14px;margin-bottom:10px}
+.checkq .q{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:7px}
+.checkq p{margin:0 0 11px;font-size:15px;color:var(--ink);font-weight:500;line-height:1.4}
+.yn{display:flex;gap:8px}
+.yn button{flex:1;padding:11px;border-radius:9px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--rule)}
+.yn .y{background:var(--red);border-color:var(--red);color:#fff}
+.yn .n{background:var(--card2);color:var(--ink2)}
+
+.dsign{display:flex;gap:12px;padding:14px 2px;border-bottom:1px solid var(--rule2);cursor:pointer;
+  align-items:flex-start;width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;text-align:left;color:inherit}
+.dsign .num{font-family:Archivo,sans-serif;font-weight:800;font-size:12px;color:var(--red);
+  background:var(--red-tint);width:24px;height:24px;border-radius:7px;display:grid;place-items:center;flex:0 0 auto;margin-top:1px}
+.dsign .txt{font-size:14.5px;line-height:1.4;color:var(--ink)}
+
+.chapterline{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:600;margin-bottom:8px;
+  display:flex;align-items:center;gap:7px}
+.sign-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule2);align-items:flex-start}
+.sign-row:last-child{border-bottom:0}
+.tier{width:7px;height:7px;border-radius:50%;flex:0 0 auto;margin-top:7px;background:var(--ink3)}
+.tier.d{background:var(--red)}.tier.c{background:var(--gold)}.tier.s{background:var(--rule)}
+.sign-row .s{font-size:14.5px;line-height:1.45}
+.step{display:flex;gap:11px;margin-bottom:13px}
+.step .n{font-family:Archivo,sans-serif;font-weight:800;font-size:12px;color:var(--ink3);
+  border:1.5px solid var(--rule);width:23px;height:23px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;margin-top:1px}
+.step .b{font-size:14.5px;line-height:1.5}
+.term{border-bottom:1.5px dotted var(--brown);color:var(--brown);font-weight:500;cursor:pointer}
+.note{background:var(--gold-tint);border-radius:10px;padding:12px 13px;font-size:13.5px;line-height:1.45;color:#6B5410;margin:14px 0}
+.note b{color:#4F3D08}
+.warn{background:var(--red-tint);border-radius:10px;padding:12px 13px;font-size:14px;line-height:1.45;color:var(--red-ink);margin:12px 0}
+.warn b{letter-spacing:.08em;text-transform:uppercase;font-size:10.5px;display:block;margin-bottom:4px}
+
+.med-card{border-left:3px solid var(--green)}
+.dose-table{width:100%;border-collapse:collapse;margin-top:4px;font-size:14px}
+.dose-table tr{border-bottom:1px solid var(--rule2)}
+.dose-table td{padding:9px 4px;vertical-align:top}
+.dose-table td:first-child{color:var(--ink2);width:48%}
+.dose-table td:last-child{font-weight:700;text-align:right;font-family:Archivo,sans-serif}
+.comes{font-size:13px;color:var(--ink3)}
+
+.pagetext{font-size:14.5px;line-height:1.6;color:var(--ink2);white-space:pre-wrap}
+.row{display:flex;align-items:center;gap:9px;padding:12px 2px;border-bottom:1px solid var(--rule2);
+  width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;text-align:left;color:inherit;cursor:pointer}
+.row .t{font-size:14.5px;line-height:1.35;flex:1}
+.row .p{font-size:11.5px;color:var(--ink3);font-weight:600}
+mark{background:var(--gold-tint);color:var(--ink);padding:0 2px;border-radius:3px}
+
+.dock{position:absolute;left:0;right:0;bottom:0;z-index:20;
+  background:linear-gradient(to bottom,rgba(242,236,223,0) 0%,var(--paper) 22%);padding-top:22px}
+.whorow{display:flex;gap:6px;padding:0 18px 9px;overflow-x:auto;scrollbar-width:none}
+.whorow::-webkit-scrollbar{display:none}
+.who{font:inherit;font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px;
+  border:1.5px solid var(--rule);background:var(--card);color:var(--ink2);cursor:pointer;white-space:nowrap}
+.who.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.searchbar{margin:0 14px 10px;display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1.5px solid var(--rule);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.searchbar input{flex:1;border:0;background:none;font:inherit;font-size:16px;color:var(--ink);outline:none;min-width:0}
+.searchbar input::placeholder{color:var(--ink3)}
+.go{background:var(--ink);color:var(--paper);border:0;width:34px;height:34px;border-radius:10px;
+  display:grid;place-items:center;cursor:pointer;flex:0 0 auto}
+.nav{display:flex;border-top:1px solid var(--rule2);background:var(--paper);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;background:none;border:0;padding:10px 2px 12px;font:inherit;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink3)}
+.nav button .lbl{font-size:10px;font-weight:700;letter-spacing:.03em}
+.nav button.on{color:var(--ink)}
+.nav button.danger{color:var(--red)}
+.ic{width:26px;height:23px;display:grid;place-items:center}
+.ic svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+.backbar{display:flex;align-items:center;gap:9px;margin:0 14px 10px;background:var(--card);
+  border:1.5px solid var(--rule);border-radius:14px;padding:12px 14px;font:inherit;font-size:14.5px;
+  font-weight:600;cursor:pointer;width:calc(100% - 28px);color:var(--ink);box-shadow:var(--shadow)}
+.backbar svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.seg{display:flex;gap:5px;margin:0 14px 10px;background:var(--card2);border:1px solid var(--rule2);padding:4px;border-radius:13px}
+.seg button{flex:1;padding:10px 4px;border-radius:10px;border:0;background:none;font:inherit;
+  font-size:13px;font-weight:700;color:var(--ink3);cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+
+.scrim{position:absolute;inset:0;background:rgba(27,23,19,.42);z-index:40;opacity:0;pointer-events:none;transition:opacity .22s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:50;background:var(--card);
+  border-radius:22px 22px 0 0;padding:10px 20px calc(26px + env(safe-area-inset-bottom));
+  transform:translateY(102%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  max-height:76%;overflow-y:auto;box-shadow:0 -8px 30px rgba(27,23,19,.18)}
+.sheet.on{transform:translateY(0)}
+.grab{width:38px;height:4px;border-radius:99px;background:var(--rule);margin:0 auto 16px}
+.sheet h3{font-family:Archivo,sans-serif;font-size:23px;margin:0 0 3px;letter-spacing:-.015em;font-weight:800}
+.sheet .kind{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:11px}
+
+.empty{text-align:center;padding:36px 20px;color:var(--ink3)}
+.empty strong{display:block;font-family:Archivo,sans-serif;font-size:18px;color:var(--ink2);margin-bottom:6px}
+.fineprint{font-size:11.5px;line-height:1.5;color:var(--ink3);margin-top:24px;padding-top:14px;border-top:1px solid var(--rule2)}
+.boot{position:absolute;inset:0;display:grid;place-items:center;background:var(--paper);z-index:99;text-align:center;padding:30px}
+.boot .b1{font-family:Archivo,sans-serif;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.boot .b2{font-size:13px;color:var(--ink3);margin-top:8px}
+.bar{width:160px;height:3px;background:var(--rule2);border-radius:99px;margin:16px auto 0;overflow:hidden}
+.bar i{display:block;height:100%;width:40%;background:var(--red);border-radius:99px;animation:sl 1.1s infinite ease-in-out}
+@keyframes sl{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
+</style>
+</head>
+<body>
+<div class="shell"><div class="app">
+  <div class="topbar">
+    <span class="mark">Where There Is <b>No Doctor</b></span>
+    <span class="edition"><span class="dot" id="netdot"></span><span id="netlbl">Offline ready</span></span>
+  </div>
+  <div class="view" id="view"></div>
+  <div class="dock" id="dock"></div>
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="sheet"></div>
+  <div class="boot" id="boot"><div>
+    <div class="b1">Where There Is No Doctor</div>
+    <div class="b2">Loading both books for offline use…</div>
+    <div class="bar"><i></i></div>
+  </div></div>
+</div></div>
+
+<script>
+/* ========================================================================
+   Where There Is No Doctor / No Dentist — offline handbook
+   Data: both books in full, extracted from the Hesperian PDFs.
+   ===================================================================== */
+let D = null, FT = null;
+
+const S = {screen:'home', who:'adult', query:'', terms:[], results:[], ft:[],
+           tab:'signs', topic:null, med:null, page:null, book:'doctor',
+           dismissed:false, fired:null, checks:[], browse:null};
+
+const view=document.getElementById('view'), dock=document.getElementById('dock'),
+      sheet=document.getElementById('sheet'), scrim=document.getElementById('scrim');
+
+const WHO=[{id:'baby',label:'Baby'},{id:'child',label:'Child'},{id:'adult',label:'Adult'},
+           {id:'preg',label:'Pregnant'},{id:'older',label:'Older'}];
+
+const SYN={ 'homa':'fever','homa kali':'high fever','hot':'fever','temperature':'fever','feverish':'fever',
+ 'kuhara':'diarrhoea','kuharisha':'diarrhoea','running stomach':'diarrhoea','loose stool':'diarrhoea',
+ 'loose stools':'diarrhoea','the runs':'diarrhoea','watery':'watery stools','watery diarrhoea':'watery stools',
+ 'kikohozi':'cough','kukohoa':'cough','anakohoa':'cough','coughing':'cough',
+ 'coughing up blood':'bloody cough','blood in cough':'bloody cough',
+ 'kuhema haraka':'fast breathing','anahema':'fast breathing','kupumua haraka':'fast breathing',
+ 'breathing fast':'fast breathing','breathing quickly':'fast breathing','panting':'fast breathing',
+ 'short of breath':'fast breathing','breathless':'fast breathing',
+ 'degedege':'convulsions','fits':'convulsions','seizure':'convulsions','seizures':'convulsions',
+ 'shaking':'chills','shivering':'chills',
+ 'kutapika':'vomiting','throwing up':'vomiting','nausea':'vomiting','kutapika sana':'vomiting',
+ 'jaundice':'yellow eyes','yellow skin':'yellow eyes','macho ya njano':'yellow eyes',
+ 'shingo ngumu':'stiff neck','neck stiff':'stiff neck',
+ 'kuumwa kichwa':'headache','maumivu ya kichwa':'headache','head pain':'headache','kichwa':'headache',
+ 'kuchoka':'weakness','amechoka':'weakness','tired':'weakness','weak':'weakness','no energy':'weakness',
+ 'kiu':'thirst','thirsty':'thirst','dry mouth':'thirst',
+ 'hataki kula':'no appetite','not eating':'no appetite','refusing food':'no appetite',
+ 'losing weight':'weight loss','getting thin':'weight loss',
+ 'night sweat':'sweating','night sweats':'sweating','sweats':'sweating',
+ 'bone pain':'joint pain','body pain':'joint pain','aching':'joint pain',
+ 'koo':'sore throat','painful throat':'sore throat',
+ 'kifua':'chest pain','jino':'toothache','meno':'toothache','tooth pain':'toothache',
+ 'fizi':'sore gums','gum pain':'sore gums','kuvimba':'swelling','swollen':'swelling',
+ 'sunken':'sunken eyes','no tears':'sunken eyes','dark pee':'dark urine','brown urine':'dark urine',
+ 'not passing urine':'no urine','cannot pee':'no urine' };
+
+const ICONS={
+ search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+ book:'<svg viewBox="0 0 24 24"><path d="M4 4.5h6.5a2 2 0 012 2V21a2 2 0 00-2-1.6H4zM20 4.5h-6.5a2 2 0 00-2 2V21a2 2 0 012-1.6H20z"/></svg>',
+ alert:'<svg viewBox="0 0 24 24"><path d="M12 4.5L2.8 19.5h18.4z"/><path d="M12 10v4M12 17v.01"/></svg>',
+ pill:'<svg viewBox="0 0 24 24"><rect x="2.6" y="8.6" width="18.8" height="6.8" rx="3.4" transform="rotate(-45 12 12)"/><path d="M8.5 8.5l7 7"/></svg>',
+ back:'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+ go:'<svg viewBox="0 0 24 24" style="width:17px;height:17px"><path d="M5 12h13M13 6l6 6-6 6"/></svg>'};
+
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const srcBadge=b=>`<span class="src ${b==='dentist'?'dentist':''}">${b==='dentist'?'Dentist':'Doctor'}</span>`;
+function go(screen,opts={}){Object.assign(S,{screen},opts);render();view.scrollTop=0;}
+
+/* glossary terms get marked up on the fly ------------------------------ */
+let GLOSS_MAP=null;
+function glossLookup(w){ return GLOSS_MAP.get(w.toLowerCase()); }
+function rich(s){
+  // Mark glossary words without regex escaping: find, check word
+  // boundaries by hand, and never cut into an existing tag.
+  let out=esc(s);
+  const isW=c=>c>='a'&&c<='z'||c>='0'&&c<='9';
+  for(const t of GLOSS_KEYS){
+    const low=out.toLowerCase(), at=low.indexOf(t);
+    if(at<0) continue;
+    const before=at===0?' ':low[at-1], after=low[at+t.length]||' ';
+    if(isW(before)||isW(after)) continue;
+    if(out.lastIndexOf('<',at)>out.lastIndexOf('>',at)) continue;
+    out=out.slice(0,at)+'<span class="term" data-term="'+t+'">'
+        +out.substr(at,t.length)+'</span>'+out.slice(at+t.length);
+  }
+  return out;
+}
+let GLOSS_KEYS=[];
+
+/* ---------------------------------------------------- the search model */
+function extract(q){
+  const text=' '+q.toLowerCase().replace(/[^a-z\s']/g,' ').replace(/\s+/g,' ')+' ';
+  const found=new Set(); let scratch=text;
+  Object.keys(SYN).sort((a,b)=>b.length-a.length).forEach(k=>{
+    if(scratch.includes(' '+k)){ found.add(SYN[k]); scratch=scratch.split(k).join(' '); }
+  });
+  Object.entries(D.symptoms).forEach(([key,s])=>{
+    if(text.includes(' '+key)||s.syn.some(p=>text.includes(' '+p))) found.add(key);
+  });
+  return [...found].filter(t=>D.symptoms[t]);
+}
+const W={d:3,c:2,s:1};
+function rank(terms){
+  const sc={};
+  terms.forEach(t=>{
+    const s=D.symptoms[t]; if(!s) return;
+    Object.entries(s.hits).forEach(([id,w])=>{
+      sc[id]=sc[id]||{id,score:0,explains:[]};
+      sc[id].score+=W[w]; sc[id].explains.push(t);
+    });
+  });
+  return Object.values(sc)
+    .map(r=>({...r,missed:terms.filter(t=>!r.explains.includes(t))}))
+    .sort((a,b)=>b.score-a.score||b.explains.length-a.explains.length).slice(0,8);
+}
+function dangerFor(terms,q){
+  const text=q.toLowerCase();
+  return D.danger.find(d=>d.hard&&d.terms.some(t=>text.includes(t)||terms.includes(t)))||null;
+}
+function checksFor(terms,q){
+  const text=(q||'').toLowerCase(); const picked=[];
+  D.danger.forEach((d,i)=>{ if(!d.hard&&d.terms.some(t=>text.includes(t)||terms.includes(t))) picked.push(i); });
+  const map={fever:[14,13],'high fever':[14,13],convulsions:[13],cough:[15],'fast breathing':[7],
+    diarrhoea:[8,7],'watery stools':[8,7],vomiting:[8],headache:[11],weakness:[6],
+    'no urine':[6],'weight loss':[15],'joint pain':[11],'belly pain':[10]};
+  terms.forEach(t=>(map[t]||[]).forEach(i=>{if(!picked.includes(i))picked.push(i);}));
+  return picked.slice(0,3).map(i=>D.danger[i]);
+}
+/* full text across every page of both books — the safety net */
+function fullText(q,limit=25){
+  const needle=q.toLowerCase().trim(); if(needle.length<3) return [];
+  const out=[];
+  for(let i=0;i<FT.length&&out.length<limit;i++){
+    const at=FT[i].indexOf(needle);
+    if(at>=0){
+      const p=D.pages[i], from=Math.max(0,at-70);
+      out.push({i,book:p.b,page:p.p,
+        snip:(from?'…':'')+p.x.slice(from,at)+'<mark>'+esc(p.x.substr(at,needle.length))+'</mark>'+p.x.slice(at+needle.length,at+90)+'…'});
+    }
+  }
+  return out;
+}
+function runSearch(q){
+  const terms=extract(q), fired=dangerFor(terms,q), results=rank(terms);
+  go('results',{query:q,terms,results,fired,dismissed:false,
+    checks:fired?[]:checksFor(terms,q), ft:results.length<3?fullText(q):[]});
+}
+
+/* ------------------------------------------------------------ screens */
+function screenHome(){
+  const starts=['Fever','Diarrhoea','Cough','Child breathing fast','Vomiting','Toothache',
+                'Bleeding gums','Burn','Snakebite','Yellow eyes'];
+  return `<div class="ask">What is wrong?</div>
+    <div class="ask-sub">Describe it in your own words — English or Kiswahili.</div>
+    <h2>Common starting points</h2>
+    <div class="quick">${starts.map(s=>`<button data-q="${s}">${s}</button>`).join('')}</div>
+    <h2>Both books, in full</h2>
+    <div class="quick">
+      <button data-browse="doctor">Where There Is No Doctor</button>
+      <button data-browse="dentist">Where There Is No Dentist</button>
+    </div>
+    <div class="note" style="margin-top:22px"><b>Works with no signal.</b>
+      Every page of both books is stored on this phone. Nothing here needs the internet.</div>
+    <div class="fineprint">
+      <b>Where There Is No Doctor</b> — David Werner with Carol Thuman and Jane Maxwell.<br>
+      <b>Where There Is No Dentist</b> — Murray Dickson.<br>
+      Both © Hesperian Health Guides, reproduced under their open copyright policy for
+      non-commercial use. Text extracted automatically from the published PDFs and not yet
+      reviewed page by page — check any dose against the printed book.</div>`;
+}
+
+function screenResults(){
+  const d=S.fired;
+  if(d&&!S.dismissed){
+    return `<div class="danger-screen">
+      <div class="danger-kicker">${ICONS.alert.replace('<svg','<svg style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;flex:0 0 auto"')} Danger sign · page ${d.p}</div>
+      <h3>${esc(d.t)}</h3>
+      <p>This person is probably too sick to be treated at home. Their life may be in danger.
+         Go to a health worker or health centre as soon as you can.</p>
+      <div class="meanwhile"><h4>Until help comes</h4>
+        <ul>${d.do.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <button class="dismiss" id="dismissDanger">I have read this — show what else it could be</button>
+    </div>`;
+  }
+  const terms=S.terms.map(t=>D.symptoms[t].label.toLowerCase());
+  const head=`${d?dangerStrip(d):''}
+    <h1 style="font-size:21px">${S.results.length?S.results.length+' things this could be':'What the books say'}</h1>
+    <p style="font-size:13px;color:var(--ink3);margin-bottom:15px">
+      ${terms.length?`From <b style="color:var(--ink2)">${terms.join(', ')}</b> in a ${WHO.find(w=>w.id===S.who).label.toLowerCase()}.`
+                   :`Searched both books for “${esc(S.query)}”.`}</p>
+    ${S.checks.length?checkBlock():''}`;
+
+  if(!S.results.length&&!S.ft.length){
+    return head+`<div class="empty"><strong>Nothing matched those words</strong>
+      Try one plain word — fever, cough, tooth — or browse the books from the Contents tab.</div>`;
+  }
+  const cards=S.results.map(r=>{
+    const t=D.topics.find(x=>x.id===r.id); if(!t) return '';
+    const n=r.explains.length, tot=S.terms.length;
+    const cls=n===tot&&tot>0?'strong':(n<=1&&tot>2?'weak':'');
+    return `<button class="card" data-topic="${t.id}">
+      <div class="card-name">${esc(t.n)} ${srcBadge(t.b)}
+        ${tot?`<span class="badge ${cls}">explains ${n} of ${tot}</span>`:''}
+        <span class="pageref">p.${t.p||'—'}</span></div>
+      <div class="why">${esc((t.i||t.s[0]||'').slice(0,150))}…</div>
+      ${r.missed.length?`<div class="gap">Does not explain <b>${r.missed.map(x=>D.symptoms[x].label.toLowerCase()).join(', ')}</b></div>`:''}
+    </button>`;}).join('');
+
+  const ft=S.ft.length?`<h2>Elsewhere in the books</h2>`+S.ft.map(f=>
+    `<button class="row" data-page="${f.i}"><span class="t">${f.snip}</span>
+       <span class="p">${f.book==='dentist'?'Dent':'Doc'} ${f.page||''}</span></button>`).join(''):'';
+
+  return head+cards+ft+(S.results.length?`<div class="note">
+    Neither book gives one answer to a set of signs. Chapter 2 of <i>Where There Is No Doctor</i>
+    exists because these illnesses are confused with each other constantly.</div>`:'');
+}
+function dangerStrip(d){
+  return `<button class="card" style="border-left:3px solid var(--red);background:var(--red-tint);border-color:rgba(181,52,42,.3)" data-danger="${D.danger.indexOf(d)}">
+    <div class="card-name" style="font-size:14.5px;color:var(--red-ink)">Danger sign — read again</div>
+    <div class="why" style="color:#7A2C23;font-size:13.5px">${esc(d.t)}</div></button>`;
+}
+function checkBlock(){
+  const d=S.checks[0];
+  return `<div class="checkq"><div class="q">One thing to check first</div>
+    <p>Is any of this true as well — ${esc(d.t.charAt(0).toLowerCase()+d.t.slice(1))}?</p>
+    <div class="yn"><button class="y" data-check="yes">Yes</button>
+      <button class="n" data-check="no">No, none of that</button></div></div>`;
+}
+
+function screenTopic(){
+  const t=D.topics.find(x=>x.id===S.topic);
+  const lists={signs:t.s,treat:t.t,prevent:t.v};
+  const cur=lists[S.tab]||[];
+  let body='';
+  if(!cur.length){
+    body=`<div class="empty"><strong>Nothing under this heading</strong>
+      The books do not list ${S.tab==='signs'?'separate signs':S.tab==='treat'?'separate treatment steps':'prevention'}
+      for this one. Open the full page below.</div>`;
+  } else if(S.tab==='signs'){
+    body=cur.map(s=>`<div class="sign-row"><span class="tier ${/\b(sometimes|may|might|occasionally)\b/i.test(s)?'s':'c'}"></span>
+      <div class="s">${rich(s)}</div></div>`).join('')
+      +`<div class="note" style="font-size:12.5px">A pale dot marks a sign the book itself hedges —
+        it writes <i>sometimes</i> or <i>may</i>. Those weights are the book's, not ours.</div>`;
+  } else {
+    body=cur.map((x,i)=>`<div class="step"><span class="n">${i+1}</span><div class="b">${rich(x)}</div></div>`).join('');
+  }
+  const pageIdx=D.pages.findIndex(p=>p.b===t.b&&p.p===t.p);
+  return `<div class="chapterline">${srcBadge(t.b)} page ${t.p||'—'}</div>
+    <h1>${esc(t.n)}</h1>
+    ${t.i?`<p class="lede" style="margin-top:10px">${rich(t.i)}</p>`:''}
+    <h2>${S.tab==='signs'?'Signs':S.tab==='treat'?'Treatment':'Prevention'}</h2>
+    ${body}
+    ${pageIdx>=0?`<button class="card" style="margin-top:18px" data-page="${pageIdx}">
+      <div class="card-name" style="font-size:15px">Read the whole page
+      <span class="pageref">p.${t.p}</span></div>
+      <div class="why" style="font-size:13px">Everything the book prints on this page, exactly as extracted.</div>
+      </button>`:''}`;
+}
+
+function screenPage(){
+  const p=D.pages[S.page];
+  const near=D.topics.filter(t=>t.b===p.b&&t.p===p.p).slice(0,4);
+  return `<div class="chapterline">${srcBadge(p.b)} page ${p.p||'—'} · full text</div>
+    ${near.length?`<h1 style="font-size:22px">${esc(near[0].n)}</h1>`:''}
+    <div class="pagetext" style="margin-top:12px">${rich(p.x)}</div>
+    <div class="note">Extracted automatically from the published PDF. Column layout can reorder
+      lines — check anything that reads oddly against the printed page.</div>`;
+}
+
+function screenDanger(){
+  return `<h1 style="color:var(--red-ink)">Danger signs</h1>
+    <p class="lede">A person with any one of these is probably too sick to be treated at home.
+      Their life may be in danger. Seek help as soon as possible — and until help comes,
+      do what the book says here.</p>
+    <h2>All twenty · Where There Is No Doctor p. 42</h2>
+    ${D.danger.map((d,i)=>`<button class="dsign" data-danger="${i}">
+      <span class="num">${i+1}</span><span class="txt">${esc(d.t)}<br>
+      <span style="font-size:11.5px;color:var(--ink3)">p. ${d.p}</span></span></button>`).join('')}`;
+}
+
+function screenMeds(){
+  const q=(S.query||'').toLowerCase();
+  let list=D.medicines;
+  if(S.screen==='meds'&&q) list=list.filter(m=>m.n.toLowerCase().includes(q)||(m.aka||'').toLowerCase().includes(q)||(m.use||'').toLowerCase().includes(q));
+  const withDose=list.filter(m=>m.d.length), rest=list.filter(m=>!m.d.length);
+  const card=m=>{
+    const hit=m.d.find(x=>bandMatches(x.band,S.who));
+    return `<button class="card med-card" data-med="${m.id}">
+      <div class="card-name" style="font-size:16px">${esc(m.n)}<span class="pageref">p.${m.p||'—'}</span></div>
+      ${m.aka||m.use?`<div class="aka">${esc(m.aka||m.use)}</div>`:''}
+      ${hit?`<div class="why" style="font-size:13.5px"><b style="color:var(--green)">${esc(hit.v)}</b> — ${esc(hit.band.toLowerCase())}</div>`
+           :`<div class="why" style="font-size:13px;color:var(--ink3)">${m.d.length?'Dose listed by age — open it':'Open for what the green pages say'}</div>`}
+    </button>`;};
+  return `<h1>Medicines</h1>
+    <p class="lede">The green pages of <i>Where There Is No Doctor</i> — ${D.medicines.length} entries.
+      Doses show for <b>${WHO.find(w=>w.id===S.who).label.toLowerCase()}</b> first.</p>
+    ${withDose.length?`<h2>With a dose table (${withDose.length})</h2>${withDose.map(card).join('')}`:''}
+    ${rest.length?`<h2>Also in the green pages (${rest.length})</h2>${rest.slice(0,120).map(card).join('')}`:''}`;
+}
+function bandMatches(band,who){
+  const b=band.toLowerCase();
+  if(who==='baby')  return /bab|newborn|infant|under 1|less than 1/.test(b);
+  if(who==='child') return /child|year/.test(b)&&!/over 12|adult/.test(b);
+  if(who==='preg')  return /pregnan/.test(b)||/adult/.test(b);
+  if(who==='older') return /adult|older/.test(b);
+  return /adult/.test(b);
+}
+function screenMed(){
+  const m=D.medicines.find(x=>x.id===S.med);
+  return `<div class="chapterline">${srcBadge('doctor')} green pages · page ${m.p||'—'}</div>
+    <h1>${esc(m.n)}</h1>
+    ${m.aka?`<div class="aka">${esc(m.aka)}</div>`:''}
+    ${m.use?`<p class="lede" style="margin-top:8px">For ${esc(m.use)}.</p>`:''}
+    ${m.comes?`<div class="comes" style="margin-top:10px"><b>Often comes in:</b> ${esc(m.comes)}</div>`:''}
+    ${m.c.map(c=>`<div class="warn"><b>Caution</b>${esc(c)}</div>`).join('')}
+    ${m.d.length?`<h2>Dose by age</h2><table class="dose-table">
+      ${m.d.map(x=>`<tr${bandMatches(x.band,S.who)?' style="background:var(--green-tint)"':''}>
+        <td>${esc(x.band)}</td><td>${esc(x.v)}</td></tr>`).join('')}</table>`:''}
+    ${m.x?`<h2>What the book says</h2><p>${rich(m.x)}</p>`:''}
+    ${!m.d.length&&!m.x?`<div class="empty"><strong>Listed in the green pages</strong>
+      The dose table for this one did not extract cleanly. Open page ${m.p} in Contents to read it whole.</div>`:''}
+    <div class="note"><b>Check every dose against the book.</b> This text was extracted
+      automatically. Page ${m.p||'—'} of the printed edition is the authority.</div>`;
+}
+
+function screenBrowse(){
+  const book=S.browse||'doctor', meta=D.books[book];
+  const q=(S.query||'').toLowerCase();
+  const pages=D.pages.map((p,i)=>({...p,i})).filter(p=>p.b===book);
+  const tops=D.topics.filter(t=>t.b===book&&t.q>=2);
+  const shown=q?tops.filter(t=>t.n.toLowerCase().includes(q)):tops;
+  return `<div class="chapterline">${srcBadge(book)} ${pages.length} pages</div>
+    <h1 style="font-size:24px">${esc(meta.title)}</h1>
+    <p class="lede">${esc(meta.author)} · ${esc(meta.edition)}</p>
+    <div class="quick" style="margin:14px 0 4px">
+      <button data-browse="${book==='doctor'?'dentist':'doctor'}">
+        Switch to ${book==='doctor'?'No Dentist':'No Doctor'}</button>
+      <button data-idx="${book}">Index (${D.index.filter(i=>i.b===book).length})</button>
+      <button data-gloss="${book}">Vocabulary (${D.glossary.filter(g=>g.b===book).length})</button>
+    </div>
+    <h2>Subjects (${shown.length})</h2>
+    ${shown.slice(0,200).map(t=>`<button class="row" data-topic="${t.id}">
+      <span class="t">${esc(t.n)}</span><span class="p">p.${t.p||'—'}</span></button>`).join('')}
+    <h2>Every page</h2>
+    <div class="quick">${pages.map(p=>`<button data-page="${p.i}" style="padding:8px 12px;font-size:13px">${p.p||'·'}</button>`).join('')}</div>`;
+}
+function screenList(kind){
+  const book=S.browse||'doctor', q=(S.query||'').toLowerCase();
+  if(kind==='idx'){
+    let rows=D.index.filter(i=>i.b===book);
+    if(q) rows=rows.filter(r=>r.t.toLowerCase().includes(q));
+    return `<h1 style="font-size:23px">Index</h1>
+      <p class="lede">${esc(D.books[book].title)} — ${rows.length} entries${q?' matching':''}.</p>
+      ${rows.slice(0,300).map(r=>`<button class="row" data-gotopage="${book}:${r.p[0]}">
+        <span class="t">${esc(r.t)}</span><span class="p">${r.p.join(', ')}</span></button>`).join('')}`;
+  }
+  let rows=D.glossary.filter(g=>g.b===book);
+  if(q) rows=rows.filter(r=>r.t.toLowerCase().includes(q));
+  return `<h1 style="font-size:23px">Vocabulary</h1>
+    <p class="lede">${esc(D.books[book].title)} — ${rows.length} words explained in plain language.</p>
+    ${rows.slice(0,400).map(r=>`<button class="row" data-term="${esc(r.t.toLowerCase())}">
+      <span class="t"><b>${esc(r.t)}</b> — ${esc(r.d.slice(0,80))}…</span></button>`).join('')}`;
+}
+
+/* --------------------------------------------------------------- dock */
+const whoRow=()=>`<div class="whorow">${WHO.map(w=>`<button class="who ${S.who===w.id?'on':''}" data-who="${w.id}">${w.label}</button>`).join('')}</div>`;
+const searchRow=ph=>`<div class="searchbar"><input id="q" placeholder="${ph}" value="${esc(S.query||'')}" autocomplete="off">
+  <button class="go" id="goBtn">${ICONS.go}</button></div>`;
+const backRow=l=>`<button class="backbar" id="backBtn">${ICONS.back}<span>${l}</span></button>`;
+function navRow(){
+  const items=[['home','Search','search'],['browse','Contents','book'],['danger','Danger','alert'],['meds','Medicines','pill']];
+  const cur={home:'home',results:'home',topic:'home',page:'browse',browse:'browse',idx:'browse',
+             gloss:'browse',danger:'danger',meds:'meds',med:'meds'}[S.screen];
+  return `<div class="nav">${items.map(([id,l,ic])=>`<button data-nav="${id}" class="${cur===id?'on':''} ${id==='danger'?'danger':''}">
+    <span class="ic">${ICONS[ic]}</span><span class="lbl">${l}</span></button>`).join('')}</div>`;
+}
+function renderDock(){
+  let h='',ht=188;
+  switch(S.screen){
+    case 'home':    h=whoRow()+searchRow('Describe what you see…')+navRow(); break;
+    case 'results': h=whoRow()+searchRow('Add another sign…')+navRow(); break;
+    case 'topic':   h=`<div class="seg">
+        <button data-tab="signs" class="${S.tab==='signs'?'on':''}">Signs</button>
+        <button data-tab="treat" class="${S.tab==='treat'?'on':''}">Treatment</button>
+        <button data-tab="prevent" class="${S.tab==='prevent'?'on':''}">Prevention</button></div>`
+        +backRow('Back')+navRow(); ht=196; break;
+    case 'page': case 'med': h=whoRow()+backRow('Back')+navRow(); break;
+    case 'browse':  h=searchRow('Find a subject…')+navRow(); ht=136; break;
+    case 'idx': case 'gloss': h=searchRow('Find a word…')+backRow('Back to contents')+navRow(); ht=194; break;
+    case 'meds':    h=whoRow()+searchRow('Find a medicine…')+navRow(); break;
+    default:        h=whoRow()+navRow(); ht=132;
+  }
+  dock.innerHTML=h;
+  document.documentElement.style.setProperty('--dock-h',ht+'px');
+}
+function render(){
+  const m={home:screenHome,results:screenResults,topic:screenTopic,page:screenPage,
+           danger:screenDanger,meds:screenMeds,med:screenMed,browse:screenBrowse,
+           idx:()=>screenList('idx'),gloss:()=>screenList('gloss')};
+  view.innerHTML=m[S.screen]();
+  renderDock();
+}
+
+/* -------------------------------------------------------------- sheet */
+function openSheet(h){sheet.innerHTML='<div class="grab"></div>'+h;sheet.classList.add('on');scrim.classList.add('on');}
+function closeSheet(){sheet.classList.remove('on');scrim.classList.remove('on');}
+scrim.addEventListener('click',closeSheet);
+function showTerm(k){
+  const g=glossLookup(k); if(!g) return;
+  openSheet(`<div class="kind">${g.b==='dentist'?'No Dentist':'No Doctor'} · vocabulary</div>
+    <h3>${esc(g.t)}</h3><p>${esc(g.d)}</p>`);
+}
+
+/* ------------------------------------------------------------- events */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-q],[data-who],[data-nav],[data-topic],[data-tab],[data-term],[data-med],[data-danger],[data-check],[data-page],[data-browse],[data-idx],[data-gloss],[data-gotopage],#goBtn,#backBtn,#dismissDanger');
+  if(!t) return;
+  const d=t.dataset;
+  if(t.id==='goBtn'){const q=document.getElementById('q');
+    if(!q) return;
+    if(S.screen==='browse'||S.screen==='idx'||S.screen==='gloss'||S.screen==='meds'){S.query=q.value;render();}
+    else if(q.value.trim()) runSearch(q.value.trim());
+    return;}
+  if(t.id==='backBtn'){
+    if(S.screen==='topic') go(S.results.length?'results':'browse');
+    else if(S.screen==='page') go('browse');
+    else if(S.screen==='med') go('meds',{query:''});
+    else go('browse',{query:''});
+    return;}
+  if(t.id==='dismissDanger'){S.dismissed=true;render();return;}
+  if(d.q!==undefined){runSearch(d.q);return;}
+  if(d.who){S.who=d.who;render();return;}
+  if(d.nav){const map={home:'home',browse:'browse',danger:'danger',meds:'meds'};
+    go(map[d.nav],{query:'',results:d.nav==='home'?[]:S.results,terms:d.nav==='home'?[]:S.terms,
+      browse:d.nav==='browse'?(S.browse||'doctor'):S.browse});return;}
+  if(d.topic){go('topic',{topic:d.topic,tab:'signs'});return;}
+  if(d.tab){S.tab=d.tab;render();return;}
+  if(d.term){showTerm(d.term);return;}
+  if(d.med){go('med',{med:d.med});return;}
+  if(d.page!==undefined){go('page',{page:+d.page});return;}
+  if(d.browse){go('browse',{browse:d.browse,query:''});return;}
+  if(d.idx){go('idx',{browse:d.idx,query:''});return;}
+  if(d.gloss){go('gloss',{browse:d.gloss,query:''});return;}
+  if(d.gotopage){const [b,p]=d.gotopage.split(':');
+    const i=D.pages.findIndex(x=>x.b===b&&x.p===p);
+    if(i>=0) go('page',{page:i});
+    return;}
+  if(d.danger!==undefined){
+    const x=D.danger[+d.danger];
+    openSheet(`<div class="kind" style="color:var(--red)">Danger sign · page ${x.p}</div>
+      <h3 style="color:var(--red-ink)">${esc(x.t)}</h3>
+      <p>Seek medical help as soon as possible.</p>
+      <div class="meanwhile" style="background:var(--red-tint)"><h4>Until help comes</h4>
+      <ul>${x.do.map(y=>`<li>${esc(y)}</li>`).join('')}</ul></div>`);
+    return;}
+  if(d.check){
+    if(d.check==='yes'){S.fired=S.checks[0];S.dismissed=false;S.checks=[];}
+    else S.checks=S.checks.slice(1);
+    render();return;}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){const q=document.getElementById('q');
+    if(q&&document.activeElement===q){document.getElementById('goBtn').click();}}
+});
+
+/* --------------------------------------------------------------- boot */
+fetch('data.json').then(r=>r.json()).then(data=>{
+  D=data;
+  FT=D.pages.map(p=>p.x.toLowerCase());
+  GLOSS_MAP=new Map();
+  D.glossary.forEach(g=>{ const k=g.t.toLowerCase(); if(!GLOSS_MAP.has(k)) GLOSS_MAP.set(k,g); });
+  GLOSS_KEYS=[...GLOSS_MAP.keys()].filter(k=>k.length>4&&k.length<26).sort((a,b)=>b.length-a.length).slice(0,260);
+  document.getElementById('boot').style.display='none';
+  render();
+}).catch(err=>{
+  document.getElementById('boot').innerHTML=
+    '<div><div class="b1">Could not load the books</div><div class="b2">'+esc(err.message)+'</div></div>';
+});
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+function net(){
+  const on=navigator.onLine;
+  document.getElementById('netdot').className='dot'+(on?'':' off');
+  document.getElementById('netlbl').textContent=on?'Offline ready':'No signal — still working';
+}
+addEventListener('online',net);addEventListener('offline',net);net();
+</script>
+</body>
+</html>
